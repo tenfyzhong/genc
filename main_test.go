@@ -103,6 +103,15 @@ func Test_genCentral(t *testing.T) {
 			want1: "Thomas Jones,08,TJone08,TJone08@cougarmail.cccc.edu",
 		},
 		{
+			name: "Thomas Jones , 08",
+			args: func(t *testing.T) args {
+				return args{
+					line: "Thomas Jones , 08",
+				}
+			},
+			want1: "Thomas Jones , 08,TJone08,TJone08@cougarmail.cccc.edu",
+		},
+		{
 			name: "Thomas Jon,108",
 			args: func(t *testing.T) args {
 				return args{
@@ -189,6 +198,15 @@ func Test_genEdgecombe(t *testing.T) {
 			want1: "tjones0303,471-23-5016,tjones0303@myedge.cc,235016",
 		},
 		{
+			name: "tjones0303 , 471-23-5016",
+			args: func(t *testing.T) args {
+				return args{
+					line: "tjones0303 , 471-23-5016",
+				}
+			},
+			want1: "tjones0303 , 471-23-5016,tjones0303@myedge.cc,235016",
+		},
+		{
 			name: "tjones0303,471235016",
 			args: func(t *testing.T) args {
 				return args{
@@ -246,6 +264,15 @@ func Test_genMayland(t *testing.T) {
 				}
 			},
 			want1: "tjones3137,Thomas Jones,03/03/1999,tjones3137@students.mayland.edu,Jo030399",
+		},
+		{
+			name: "tjones3137  ,   Thomas Jones  , 03/03/1999",
+			args: func(t *testing.T) args {
+				return args{
+					line: "tjones3137  ,   Thomas Jones  , 03/03/1999",
+				}
+			},
+			want1: "tjones3137  ,   Thomas Jones  , 03/03/1999,tjones3137@students.mayland.edu,Jo030399",
 		},
 		{
 			name: "tjones3137,Thomas Jones",

@@ -133,7 +133,7 @@ func genCentral(line string) string {
 		return ""
 	}
 
-	names := strings.SplitN(items[0], " ", 2)
+	names := strings.SplitN(strings.TrimSpace(items[0]), " ", 2)
 	if len(names) != 2 {
 		return ""
 	}
@@ -149,10 +149,12 @@ func genCentral(line string) string {
 		result += names[1]
 	}
 
-	if len(items[1]) >= 3 {
-		result += items[1][len(items[1])-3:]
+	id := strings.TrimSpace(items[1])
+
+	if len(id) >= 3 {
+		result += id[len(id)-3:]
 	} else {
-		result += items[1]
+		result += id
 	}
 
 	return fmt.Sprintf("%s,%s,%s@cougarmail.cccc.edu", line, result, result)
@@ -164,12 +166,14 @@ func genEdgecombe(line string) string {
 		return ""
 	}
 
-	ssn := strings.Replace(items[1], "-", "", -1)
+	user := strings.TrimSpace(items[0])
+
+	ssn := strings.Replace(strings.TrimSpace(items[1]), "-", "", -1)
 	result := ssn
 	if len(result) > 6 {
 		result = result[len(result)-6:]
 	}
-	return fmt.Sprintf("%s,%s@myedge.cc,%s", line, items[0], result)
+	return fmt.Sprintf("%s,%s@myedge.cc,%s", line, user, result)
 }
 
 func genMayland(line string) string {
@@ -177,9 +181,9 @@ func genMayland(line string) string {
 	if len(items) != 3 {
 		return ""
 	}
-	user := items[0]
-	name := items[1]
-	day, month, year, err := parseBirthday(items[2])
+	user := strings.TrimSpace(items[0])
+	name := strings.TrimSpace(items[1])
+	day, month, year, err := parseBirthday(strings.TrimSpace(items[2]))
 	if err != nil {
 		return ""
 	}
@@ -207,9 +211,9 @@ func parseBirthday(str string) (day, month, year string, err error) {
 		err = fmt.Errorf("items no enouth")
 		return
 	}
-	day = items[0]
-	month = items[1]
-	year = items[2]
+	day = strings.TrimSpace(items[0])
+	month = strings.TrimSpace(items[1])
+	year = strings.TrimSpace(items[2])
 	if len(year) > 2 {
 		year = year[len(year)-2:]
 	}
