@@ -372,3 +372,47 @@ func Test_outputFilename(t *testing.T) {
 		})
 	}
 }
+
+func Test_genMail(t *testing.T) {
+	type args struct {
+		str  string
+		host string
+	}
+	tests := []struct {
+		name string
+		args func(t *testing.T) args
+
+		want1 string
+	}{
+		{
+			name: "empty",
+			args: func(t *testing.T) args {
+				return args{
+					str:  "",
+					host: "163.com",
+				}
+			},
+			want1: "",
+		},
+		{
+			name: "tjones0303",
+			args: func(t *testing.T) args {
+				return args{
+					str:  "tjones0303",
+					host: "@163.com",
+				}
+			},
+			want1: "tjones0303,tjones0303@163.com",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			tArgs := tt.args(t)
+
+			got1 := genMail(tArgs.str, tArgs.host)
+
+			assert.Equal(t, tt.want1, got1)
+		})
+	}
+}

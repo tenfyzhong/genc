@@ -13,11 +13,13 @@ import (
 var (
 	filename string
 	template int
+	host     string
 )
 
 func init() {
 	flag.StringVar(&filename, "file", "", "filename")
-	flag.IntVar(&template, "template", 0, "timestamp")
+	flag.IntVar(&template, "template", 0, "template")
+	flag.StringVar(&host, "host", "", "host for template 5")
 	flag.Parse()
 }
 
@@ -32,21 +34,40 @@ func main() {
 		fmt.Println()
 	}
 
-	for template < 1 || template > 4 {
+	for template < 1 || template > 5 {
 		fmt.Println("1. Cleveland")
 		fmt.Println("2. Central")
 		fmt.Println("3. edgecombe")
 		fmt.Println("4. Mayland")
+		fmt.Println("5. Email")
 		fmt.Printf("请输入解析模板编号: ")
 		fmt.Scanf("%d", &template)
-		if template < 1 || template > 4 {
+		if template < 1 || template > 5 {
 			fmt.Println("\n选择错误，请重新选择")
 			continue
 		}
 		fmt.Println()
 	}
 
-	gen(filename, template)
+	if template == 5 {
+		for host == "" {
+			fmt.Printf("请输入要生成的邮箱域名(eg @myedge.cc): ")
+			fmt.Scanf("%s", &host)
+			if host == "" {
+				fmt.Println("\n域名为空，请重新输入")
+				continue
+			}
+			fmt.Println()
+		}
+	}
+
+	host = strings.TrimSpace(host)
+
+	if host[0:1] != "@" {
+		host = "@" + host
+	}
+
+	gen(filename, template, host)
 
 }
 
@@ -58,7 +79,7 @@ func outputFilename(filename string) string {
 	return filename[:index] + "_out.csv"
 }
 
-func gen(filename string, template int) {
+func gen(filename string, template int, host string) {
 	fmt.Printf("正在使用模板[%d]转换[%s]\n", template, filename)
 	ifile, err := os.Open(filename)
 	if err != nil {
@@ -97,6 +118,8 @@ func gen(filename string, template int) {
 			result = genEdgecombe(line)
 		case 4:
 			result = genMayland(line)
+		case 5:
+			result = genMail(line, host)
 		}
 
 		if result == "" {
@@ -219,4 +242,11 @@ func parseBirthday(str string) (day, month, year string, err error) {
 	}
 	err = nil
 	return
+}
+
+func genMail(str string, host string) string {
+	if str == "" {
+		return ""
+	}
+	return str + "," + str + host
 }
