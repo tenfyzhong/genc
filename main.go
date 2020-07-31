@@ -8,6 +8,7 @@ import (
 	"log"
 	"os"
 	"strings"
+	"time"
 )
 
 var (
@@ -32,6 +33,10 @@ func main() {
 			continue
 		}
 		fmt.Println()
+	}
+
+	if !strings.HasSuffix(filename, ".txt") && !strings.HasSuffix(filename, ".TXT") {
+		filename += ".txt"
 	}
 
 	for template < 1 || template > 5 {
@@ -59,16 +64,21 @@ func main() {
 			}
 			fmt.Println()
 		}
+
+		host = strings.TrimSpace(host)
+
+		if host[0:1] != "@" {
+			host = "@" + host
+		}
 	}
 
-	host = strings.TrimSpace(host)
+	output := gen(filename, template, host)
+	fmt.Printf("文件[%s]生成成功\n\n", output)
 
-	if host[0:1] != "@" {
-		host = "@" + host
+	for i := 5; i > 0; i-- {
+		fmt.Printf("\r程序将在%d秒后退出", i)
+		time.Sleep(1 * time.Second)
 	}
-
-	gen(filename, template, host)
-
 }
 
 func outputFilename(filename string) string {
@@ -79,7 +89,7 @@ func outputFilename(filename string) string {
 	return filename[:index] + "_out.csv"
 }
 
-func gen(filename string, template int, host string) {
+func gen(filename string, template int, host string) string {
 	fmt.Printf("正在使用模板[%d]转换[%s]\n", template, filename)
 	ifile, err := os.Open(filename)
 	if err != nil {
@@ -133,6 +143,7 @@ func gen(filename string, template int, host string) {
 		}
 	}
 
+	return output
 }
 
 func genCleveland(line string) string {
