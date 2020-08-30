@@ -158,7 +158,7 @@ func genCleveland(line string) string {
 		result = line[len(line)-3:]
 	}
 
-	return fmt.Sprintf("%s,%s@my.clevelandcc.edu,1999CCC#%s", line, line, result)
+	return fmt.Sprintf("%s,%s@my.clevelandcc.edu,2001CCC#%s", line, line, result)
 }
 
 func genCentral(line string) string {
