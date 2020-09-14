@@ -39,15 +39,17 @@ func main() {
 		filename += ".txt"
 	}
 
-	for template < 1 || template > 5 {
+	for template < 1 || template > 7 {
 		fmt.Println("1. Cleveland")
 		fmt.Println("2. Central")
 		fmt.Println("3. edgecombe")
 		fmt.Println("4. Mayland")
 		fmt.Println("5. Email")
+		fmt.Println("6. Cpcc")
+		fmt.Println("7. Southwestern")
 		fmt.Printf("请输入解析模板编号: ")
 		fmt.Scanf("%d", &template)
-		if template < 1 || template > 5 {
+		if template < 1 || template > 7 {
 			fmt.Println("\n选择错误，请重新选择")
 			continue
 		}
@@ -75,7 +77,7 @@ func main() {
 	output := gen(filename, template, host)
 	fmt.Printf("文件[%s]生成成功\n\n", output)
 
-	for i := 5; i > 0; i-- {
+	for i := 1; i > 0; i-- {
 		fmt.Printf("\r程序将在%d秒后退出", i)
 		time.Sleep(1 * time.Second)
 	}
@@ -130,6 +132,10 @@ func gen(filename string, template int, host string) string {
 			result = genMayland(line)
 		case 5:
 			result = genMail(line, host)
+		case 6:
+			result = genCpcc(line)
+		case 7:
+			result = genSouthwestern(line)
 		}
 
 		if result == "" {
@@ -200,9 +206,8 @@ func genEdgecombe(line string) string {
 		return ""
 	}
 
-	user := strings.TrimSpace(items[0])
-
-	ssn := strings.Replace(strings.TrimSpace(items[1]), "-", "", -1)
+	ssn := strings.Replace(strings.TrimSpace(items[0]), "-", "", -1)
+	user := strings.TrimSpace(items[1])
 	result := ssn
 	if len(result) > 6 {
 		result = result[len(result)-6:]
@@ -260,4 +265,18 @@ func genMail(str string, host string) string {
 		return ""
 	}
 	return str + "," + str + host
+}
+
+func genCpcc(str string) string {
+	if str == "" {
+		return ""
+	}
+	return str + "@email.cpcc.edu"
+}
+
+func genSouthwestern(str string) string {
+	if str == "" {
+		return ""
+	}
+	return str + "@student.southwesterncc.edu"
 }
